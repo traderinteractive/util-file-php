@@ -85,4 +85,40 @@ final class File
             }
         }
     }
+
+    /**
+     * Recursively deletes the given directory path until a non-empty directory is found or the $stopAtPath is reached.
+     *
+     * @param string $deletePath The empty directory path to delete.
+     * @param string $stopAtPath The point at which the deletion should stop. Defaults to /.
+     *
+     * @return void
+     */
+    public static function deletePathIfEmpty($deletePath, $stopAtPath = '/')
+    {
+        if (!file_exists($deletePath)) {
+            return;
+        }
+
+        if (realpath($deletePath) === realpath($stopAtPath)) {
+            return;
+        }
+
+        $handle = dir($deletePath);
+        for ($entry = $handle->read(); $entry !== false; $entry = $handle->read()) {
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+
+            //dir not empty
+            $handle->close();
+            return;
+        }
+
+        rmdir($deletePath);
+        $handle->close();
+
+        //RECURSION!!!
+        self::deletePathIfEmpty(dirname($deletePath), $stopAtPath);
+    }
 }

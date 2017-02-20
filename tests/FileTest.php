@@ -223,4 +223,62 @@ final class FileTest extends \PHPUnit_Framework_TestCase
         error_reporting(0);
         F::delete($this->topLevelDirPath);
     }
+
+    /**
+     * verify basic behavior of deletePathIfEmpty().
+     *
+     * @test
+     * @covers ::deletePathIfEmpty
+     *
+     * @return void
+     */
+    public function deletePathIfEmpty()
+    {
+        $path = "{$this->topLevelDirPath}/path/to/sub/folder";
+        mkdir($path, 0755, true);
+        $this->assertFileExists($path, "Unable to create '{$path}'.");
+        F::deletePathIfEmpty($path, $this->topLevelDirPath);
+        $this->assertFileNotExists($path, "Unable to delete '{$path}'.");
+    }
+
+    /**
+     * verify behavior of deletePathIfEmpty() when $deletePath does not exist.
+     *
+     * @test
+     * @covers ::deletePathIfEmpty
+     *
+     * @return void
+     */
+    public function deletePathIfEmptyNotExists()
+    {
+        $path = "{$this->topLevelDirPath}/path/to/sub/folder";
+        $this->assertFileNotExists($path, "Unable to delete '{$path}'.");
+        $this->assertNull(F::deletePathIfEmpty($path));
+    }
+
+    /**
+     * verify behavior of deletePathIfEmpty() when a folder in $deletePath contains a file.
+     *
+     * @test
+     * @covers ::deletePathIfEmpty
+     *
+     * @return void
+     */
+    public function deletePathIfEmptyNotEmpty()
+    {
+        $path = "{$this->topLevelDirPath}/path/to/sub/folder";
+        $file = "{$this->topLevelDirPath}/path/to/file.txt";
+        mkdir($path, 0777, true);
+        touch($file);
+        $this->assertFileExists($path, "Unable to create '{$path}'.");
+        $this->assertFileExists($file, 'Unable to create text file');
+        F::deletePathIfEmpty($path, $this->topLevelDirPath);
+        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to/sub/folder");
+        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to/sub");
+        $this->assertFileExists($file, "{$file} was deleted");
+        unlink($file);
+        $this->assertFileNotExists($file, "{$file} was not deleted");
+        F::deletePathIfEmpty("{$this->topLevelDirPath}/path/to", $this->topLevelDirPath);
+        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to");
+    }
 }
