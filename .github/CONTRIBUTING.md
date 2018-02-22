@@ -7,17 +7,17 @@ We recommend including details of your particular usecase(s) with any issues or 
 and we can get things merged in quicker when we understand its expected usage.
 
 ## Pull Requests
-Code changes should be sent through [GitHub Pull Requests](/../../pulls).  Before submitting the pull request, make sure that phpunit reports success:
-
-### PHPUnit
-While the build does not strictly enforce 100% [PHPUnit](http://www.phpunit.de) code coverage, it will not allow coverage to drop below its current percentage.
-
+Code changes should be sent through [GitHub Pull Requests](/../../pulls).  Before submitting the pull request, make sure that phpunit reports success
+by running:
 ```sh
-./vendor/bin/phpunit --coverage-html coverage
+./vendor/bin/phpunit
 ```
-
-### PHP CodeSniffer
-The build will also not allow any errors for the [coding standard](http://chadicus.github.io/coding-standard/)
-
+And there are not coding standard violations by running
 ```sh
 ./vendor/bin/phpcs
+```
+
+## Builds
+Our [Travis build](https://travis-ci.org/traderinteractive/util-file-php) executes [PHPUnit](http://www.phpunit.de) and uses [Coveralls](https://coveralls.io/) to enforce code coverage.
+While the build does not strictly enforce 100% code coverage, it will not allow coverage to drop below its current percentage.
+[Scrutinizer](https://scrutinizer-ci.com/) is used to ensure code quality and enforce the [coding standard](http://www.php-fig.org/psr/psr-2/).
