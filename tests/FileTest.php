@@ -5,12 +5,13 @@
 
 namespace TraderInteractive\Util;
 
+use PHPUnit\Framework\TestCase;
 use TraderInteractive\Util\File as F;
 
 /**
  * @coversDefaultClass \TraderInteractive\Util\File
  */
-final class FileTest extends \PHPUnit_Framework_TestCase
+final class FileTest extends TestCase
 {
     private $topLevelDirPath;
     private $topLevelFilePath;
