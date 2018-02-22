@@ -37,16 +37,11 @@ final class File
 
             if (is_dir($fullPath)) {
                 self::deleteDirectoryContents($fullPath);//RECURSIVE CALL
-                if (!rmdir($fullPath)) {
-                    throw new \Exception("cannot delete '{$fullPath}'", 1);
-                }
-
+                self::throwIfFalse(rmdir($fullPath), "cannot delete '{$fullPath}'", 1);
                 continue;
             }
 
-            if (!unlink($fullPath)) {
-                throw new \Exception("cannot delete '{$fullPath}'", 2);
-            }
+            self::throwIfFalse(unlink($fullPath), "cannot delete '{$fullPath}'", 2);
         }
     }
 
@@ -71,9 +66,7 @@ final class File
         }
 
         try {
-            if (unlink($path) === false) {
-                throw new \Exception("unlink returned false for '{$path}'");
-            }
+            self::throwIfFalse(unlink($path), "unlink returned false for '{$path}'");
         } catch (\Exception $e) {
             if (file_exists($path)) {
                 throw $e;
@@ -115,5 +108,12 @@ final class File
 
         //RECURSION!!!
         self::deletePathIfEmpty(dirname($deletePath), $stopAtPath);
+    }
+
+    private static function throwIfFalse($condition, string $message, int $code = 0)
+    {
+        if ($condition === false) {
+            throw new \Exception($message, $code);
+        }
     }
 }
