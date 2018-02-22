@@ -52,4 +52,4 @@ There is also a [docker](http://www.docker.com/)-based [fig](http://www.fig.sh/)
 fig run build
 ```
 
-For more information on our build process, read through out our [Contribution Guidelines](CONTRIBUTING.md).
+For more information on our build process, read through out our [Contribution Guidelines](.github/CONTRIBUTING.md).
