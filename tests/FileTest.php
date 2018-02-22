@@ -66,17 +66,6 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::deleteDirectoryContents
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $directoryPath is not a string
-     */
-    public function deleteDirectoryContentsNonStringPath()
-    {
-        F::deleteDirectoryContents(1);
-    }
-
-    /**
-     * @test
-     * @covers ::deleteDirectoryContents
      * @expectedException \Exception
      * @expectedExceptionMessage cannot list directory '/some/where/that/doesnt/exist'
      */
@@ -181,17 +170,6 @@ final class FileTest extends TestCase
         $this->assertTrue(mkdir($this->topLevelDirPath));
         error_reporting(0);
         F::delete($this->topLevelDirPath);
-    }
-
-    /**
-     * @test
-     * @covers ::delete
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $path is not a string or is whitespace
-     */
-    public function deleteNonStringPath()
-    {
-        F::delete(1);
     }
 
     /**
