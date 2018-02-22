@@ -1,11 +1,9 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\File class.
+ * Defines the \TraderInteractive\Util\File class.
  */
 
-namespace DominionEnterprises\Util;
-
-use DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 /**
  * Class of static file utility functions.

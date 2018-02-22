@@ -1,15 +1,14 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\FileTest class
+ * Defines the \TraderInteractive\Util\FileTest class
  */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
-use DominionEnterprises\Util\File as F;
-use DominionEnterprises\Util\Time as T;
+use TraderInteractive\Util\File as F;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Util\File
+ * @coversDefaultClass \TraderInteractive\Util\File
  */
 final class FileTest extends \PHPUnit_Framework_TestCase
 {
