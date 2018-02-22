@@ -12,42 +12,42 @@
 [![Monthly Downloads](https://poser.pugx.org/traderinteractive/util-file/d/monthly)](https://packagist.org/packages/traderinteractive/util-file)
 [![Daily Downloads](https://poser.pugx.org/traderinteractive/util-file/d/daily)](https://packagist.org/packages/traderinteractive/util-file)
 
-A collection of general util-fileities for making common programming tasks easier.
+A collection of general file utilities for making common programming tasks easier.
 
 ## Requirements
 
-util-file-php requires PHP 5.4 (or later).
+util-file-php requires PHP 7.0 (or later).
 
 ##Composer
 To add the library as a local, per-project dependency use [Composer](http://getcomposer.org)! Simply add a dependency on
 `traderinteractive/util-file` to your project's `composer.json` file such as:
 
-```json
-{
-    "require": {
-        "traderinteractive/util-file": "~1.0"
-    }
-}
+```sh
+composer require traderinteractive/util-file
 ```
-##Documentation
+
+## Documentation
+
 Found in the [source](src) itself, take a look!
 
-##Contact
+## Contact
+
 Developers may be contacted at:
 
  * [Pull Requests](https://github.com/traderinteractive/util-file-php/pulls)
  * [Issues](https://github.com/traderinteractive/util-file-php/issues)
 
-##Project Build
+## Project Build
+
 With a checkout of the code get [Composer](http://getcomposer.org) in your PATH and run:
 
 ```sh
-./build.php
+./vendor/bin/phpunit
+./vendor/bin/phpcs
 ```
 
-There is also a [docker](http://www.docker.com/)-based
-[fig](http://www.fig.sh/) configuration that will execute the build inside a
-docker container.  This is an easy way to build the application:
+There is also a [docker](http://www.docker.com/)-based [fig](http://www.fig.sh/) configuration that will execute the build inside a docker container.  This is an easy way to build the application:
+
 ```sh
 fig run build
 ```
