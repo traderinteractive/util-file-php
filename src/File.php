@@ -40,10 +40,12 @@ final class File
                 if (!rmdir($fullPath)) {
                     throw new \Exception("cannot delete '{$fullPath}'", 1);
                 }
-            } else {
-                if (!unlink($fullPath)) {
-                    throw new \Exception("cannot delete '{$fullPath}'", 2);
-                }
+
+                continue;
+            }
+
+            if (!unlink($fullPath)) {
+                throw new \Exception("cannot delete '{$fullPath}'", 2);
             }
         }
     }
