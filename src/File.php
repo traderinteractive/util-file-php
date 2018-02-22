@@ -1,11 +1,9 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\File class.
+ * Defines the \TraderInteractive\Util\File class.
  */
 
-namespace DominionEnterprises\Util;
-
-use DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 /**
  * Class of static file utility functions.
@@ -19,17 +17,12 @@ final class File
      *
      * @return void
      *
-     * @throws \InvalidArgumentException if $directoryPath is not a string
      * @throws \Exception if file cannot be deleted
      * @throws \Exception if directory cannot be deleted
      * @throws \Exception if $directoryPath cannot be listed
      */
-    public static function deleteDirectoryContents($directoryPath)
+    public static function deleteDirectoryContents(string $directoryPath)
     {
-        if (!is_string($directoryPath)) {
-            throw new \InvalidArgumentException('$directoryPath is not a string');
-        }
-
         $paths = scandir($directoryPath);
         if ($paths === false) {
             throw new \Exception("cannot list directory '{$directoryPath}'");
@@ -44,14 +37,11 @@ final class File
 
             if (is_dir($fullPath)) {
                 self::deleteDirectoryContents($fullPath);//RECURSIVE CALL
-                if (!rmdir($fullPath)) {
-                    throw new \Exception("cannot delete '{$fullPath}'", 1);
-                }
-            } else {
-                if (!unlink($fullPath)) {
-                    throw new \Exception("cannot delete '{$fullPath}'", 2);
-                }
+                self::throwIfFalse(rmdir($fullPath), "cannot delete '{$fullPath}'", 1);
+                continue;
             }
+
+            self::throwIfFalse(unlink($fullPath), "cannot delete '{$fullPath}'", 2);
         }
     }
 
@@ -62,12 +52,12 @@ final class File
      *
      * @return void
      *
-     * @throws \InvalidArgumentException if $path is not a string or is whitespace
-     * throws \Exception if unlink returns false
+     * @throws \InvalidArgumentException if $path is whitespace
+     * @throws \Exception if unlink returns false
      */
-    public static function delete($path)
+    public static function delete(string $path)
     {
-        if (!is_string($path) || trim($path) === '') {
+        if (trim($path) === '') {
             throw new \InvalidArgumentException('$path is not a string or is whitespace');
         }
 
@@ -76,9 +66,7 @@ final class File
         }
 
         try {
-            if (unlink($path) === false) {
-                throw new \Exception("unlink returned false for '{$path}'");
-            }
+            self::throwIfFalse(unlink($path), "unlink returned false for '{$path}'");
         } catch (\Exception $e) {
             if (file_exists($path)) {
                 throw $e;
@@ -94,7 +82,7 @@ final class File
      *
      * @return void
      */
-    public static function deletePathIfEmpty($deletePath, $stopAtPath = '/')
+    public static function deletePathIfEmpty(string $deletePath, string $stopAtPath = '/')
     {
         if (!file_exists($deletePath)) {
             return;
@@ -120,5 +108,12 @@ final class File
 
         //RECURSION!!!
         self::deletePathIfEmpty(dirname($deletePath), $stopAtPath);
+    }
+
+    private static function throwIfFalse($condition, string $message, int $code = 0)
+    {
+        if ($condition === false) {
+            throw new \Exception($message, $code);
+        }
     }
 }

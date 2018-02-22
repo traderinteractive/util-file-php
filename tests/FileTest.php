@@ -1,17 +1,17 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\FileTest class
+ * Defines the \TraderInteractive\Util\FileTest class
  */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
-use DominionEnterprises\Util\File as F;
-use DominionEnterprises\Util\Time as T;
+use PHPUnit\Framework\TestCase;
+use TraderInteractive\Util\File as F;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Util\File
+ * @coversDefaultClass \TraderInteractive\Util\File
  */
-final class FileTest extends \PHPUnit_Framework_TestCase
+final class FileTest extends TestCase
 {
     private $topLevelDirPath;
     private $topLevelFilePath;
@@ -61,17 +61,6 @@ final class FileTest extends \PHPUnit_Framework_TestCase
 
             rmdir($this->topLevelDirPath);
         }
-    }
-
-    /**
-     * @test
-     * @covers ::deleteDirectoryContents
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $directoryPath is not a string
-     */
-    public function deleteDirectoryContentsNonStringPath()
-    {
-        F::deleteDirectoryContents(1);
     }
 
     /**
@@ -181,17 +170,6 @@ final class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(mkdir($this->topLevelDirPath));
         error_reporting(0);
         F::delete($this->topLevelDirPath);
-    }
-
-    /**
-     * @test
-     * @covers ::delete
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $path is not a string or is whitespace
-     */
-    public function deleteNonStringPath()
-    {
-        F::delete(1);
     }
 
     /**
