@@ -20,9 +20,9 @@ final class FileTest extends TestCase
 
     private $oldErrorReporting;
 
-    public function setup()
+    public function setUp(): void
     {
-        parent::setup();
+        parent::setUp();
 
         $this->oldErrorReporting = error_reporting();
 
@@ -35,7 +35,7 @@ final class FileTest extends TestCase
     }
 
     //this is just for convenience, DO NOT RELY ON IT
-    public function tearDown()
+    public function tearDown(): void
     {
         error_reporting($this->oldErrorReporting);
 
@@ -66,11 +66,11 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::deleteDirectoryContents
-     * @expectedException \Exception
-     * @expectedExceptionMessage cannot list directory '/some/where/that/doesnt/exist'
      */
     public function deleteDirectoryContentsNonExistentPath()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('cannot list directory \'/some/where/that/doesnt/exist\'');
         error_reporting(0);
         F::deleteDirectoryContents('/some/where/that/doesnt/exist');
     }
@@ -107,11 +107,11 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::deleteDirectoryContents
-     * @expectedException \Exception
-     * @expectedExceptionCode 2
      */
     public function deleteDirectoryContentsWithProtectedFile()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode('2');
         $this->assertTrue(mkdir($this->topLevelDirPath));
 
         file_put_contents($this->topLevelFilePath, 'hello dolly !');
@@ -125,11 +125,11 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::deleteDirectoryContents
-     * @expectedException \Exception
-     * @expectedExceptionCode 1
      */
     public function deleteDirectoryContentsWithProtectedDirectory()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode('1');
         $this->assertTrue(mkdir($this->subLevelDirPath, 0777, true));
 
         $this->assertTrue(chmod($this->topLevelDirPath, 0555));
@@ -163,10 +163,10 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::delete
-     * @expectedException \Exception
      */
     public function deleteDirectory()
     {
+        $this->expectException(\Exception::class);
         $this->assertTrue(mkdir($this->topLevelDirPath));
         error_reporting(0);
         F::delete($this->topLevelDirPath);
@@ -175,11 +175,11 @@ final class FileTest extends TestCase
     /**
      * @test
      * @covers ::delete
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $path is not a string or is whitespace
      */
     public function deletePathIsWhitespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$path is not a string or is whitespace');
         F::delete('  ');
     }
 
@@ -188,10 +188,10 @@ final class FileTest extends TestCase
      *
      * @test
      * @covers ::delete
-     * @expectedException \Exception
      */
     public function deleteProtectedFile()
     {
+        $this->expectException(\Exception::class);
         $this->assertTrue(mkdir($this->topLevelDirPath));
 
         file_put_contents($this->topLevelFilePath, 'hello dolly !');
@@ -216,7 +216,7 @@ final class FileTest extends TestCase
         mkdir($path, 0755, true);
         $this->assertFileExists($path, "Unable to create '{$path}'.");
         F::deletePathIfEmpty($path, $this->topLevelDirPath);
-        $this->assertFileNotExists($path, "Unable to delete '{$path}'.");
+        $this->assertFileDoesNotExist($path, "Unable to delete '{$path}'.");
     }
 
     /**
@@ -230,7 +230,7 @@ final class FileTest extends TestCase
     public function deletePathIfEmptyNotExists()
     {
         $path = "{$this->topLevelDirPath}/path/to/sub/folder";
-        $this->assertFileNotExists($path, "Unable to delete '{$path}'.");
+        $this->assertFileDoesNotExist($path, "Unable to delete '{$path}'.");
         $this->assertNull(F::deletePathIfEmpty($path));
     }
 
@@ -251,12 +251,12 @@ final class FileTest extends TestCase
         $this->assertFileExists($path, "Unable to create '{$path}'.");
         $this->assertFileExists($file, 'Unable to create text file');
         F::deletePathIfEmpty($path, $this->topLevelDirPath);
-        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to/sub/folder");
-        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to/sub");
+        $this->assertFileDoesNotExist("{$this->topLevelDirPath}/path/to/sub/folder");
+        $this->assertFileDoesNotExist("{$this->topLevelDirPath}/path/to/sub");
         $this->assertFileExists($file, "{$file} was deleted");
         unlink($file);
-        $this->assertFileNotExists($file, "{$file} was not deleted");
+        $this->assertFileDoesNotExist($file, "{$file} was not deleted");
         F::deletePathIfEmpty("{$this->topLevelDirPath}/path/to", $this->topLevelDirPath);
-        $this->assertFileNotExists("{$this->topLevelDirPath}/path/to");
+        $this->assertFileDoesNotExist("{$this->topLevelDirPath}/path/to");
     }
 }
